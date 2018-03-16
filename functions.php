@@ -9,6 +9,9 @@ function str_rep($str) {
 
 // curl function, used to new xml
 function curl($url){
+  if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+  }
   $curl = curl_init();
   curl_setopt($curl, CURLOPT_URL, $url);
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);

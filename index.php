@@ -1,8 +1,7 @@
 <?php
 // include functions for curl method
 include 'functions.php';
-//start session to pass data to session 'xml' variable
-session_start();
+
 //use curl method to get and convert data to simplexml
 //xml data put into variable $xml
 curl('http://www.andy-huynh.com:5000/postsxml/')
