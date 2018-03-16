@@ -42,7 +42,7 @@ curl($url);
 
         <h2><?php echo $xml->response->title ?></h2>
 
-        by . <?php echo $xml ->info->owner ?> on
+        by <?php echo $xml ->info->owner ?> on
 
         <em>
         <?php $date = new DateTime();
