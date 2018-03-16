@@ -1,0 +1,239 @@
+
+    <root>
+    <status>200</status>
+    <info><owner>Andy Huynh</owner><title>Andy's Blog</title><id>1</id></info>
+    <links><link><id>1</id><href>/blog</href><text>Home</text></link><link><id>2</id><href>/#about</href><text>About</text></link><link><id>3</id><href>/#contact</href><text>Contact</text></link></links>
+    <page_count>1</page_count>
+    <latest><Lart><id>5</id><title>How to setup my blog template</title><date>1519359161</date></Lart><Lart><id>4</id><title>Building a CMS</title><date>1518676259</date></Lart><Lart><id>3</id><title>Introduction to Bootstrap</title><date>1518404985</date></Lart><Lart><id>2</id><title>Fetching data with React</title><date>1517969484</date></Lart><Lart><id>1</id><title>Hello World!</title><date>1517297262</date></Lart></latest>
+    <response><article><id>5</id><title>How to setup my blog template</title><body><![CDATA[<p>I just released my blog template on github. If you just want to see the repo or clone/fork the project you can do that at&nbsp;<a href="https://github.com/hex28/blog-template">https://github.com/hex28/blog-template.</a></p>
+<p>You can see a live preview of the template&nbsp;<a href="http://www.andy-huynh.com/templates/blog-template">here</a><br /><br />I want to show you how you can setup this project step by step and explain all the moving parts.</p>
+<p>This project is built with</p>
+<ul>
+<li><a href="https://reactjs.org/">React</a></li>
+<li><a href="http://handlebarsjs.com/">Handlebars</a></li>
+<li><a href="https://webpack.js.org/">Webpack</a></li>
+<li><a href="https://nodejs.org/en/">NodeJS</a></li>
+<li><a href="https://expressjs.com/">Express</a></li>
+<li><a href="https://yarnpkg.com/en/">Yarn</a></li>
+</ul>
+<p>Now I want to explain my reasoning behind using React and Handlebars together. If you don't want to listen to me rambling on you can skip ahead to the coding.</p>
+<p>Generally, when we think of React, we think of Single Page Applications or SPAs. SPA's are "web apps that load a single HTML page and dynamically updates as the user interacts with the app" -&nbsp;<a href="https://msdn.microsoft.com/en-us/magazine/dn463786.aspx">Mike Wasson</a>.&nbsp;</p>
+<p><a href="https://medium.com/javascript-scene/top-javascript-libraries-tech-to-learn-in-2018-c38028e028e6"><img src="https://cdn-images-1.medium.com/max/1980/1*Z5dxtF877QndConbs0Tglg.png" alt="" width="100%" height="auto" /></a></p>
+<p><em>React looks like it'll win the popularity contest for JS libraries/frameworks in 2018</em></p>
+<p>React's popularity is well deserved, as it is lightweight, easy to integrate into your project, and Fetch it's Ajax equivalent as I've discovered tends to be faster then jQuery ajax/HTTP GET.<br />For all intents and purposes its possible to build a blog that is an SPA and there are tutorials out there to assist you in that endeavor. However in this way, you'd have to create routes through React and this means using something like React-router. If you choose this method (which is fine it's your choice), you are tied into React. The thing I like about React is that I don't have to tie myself into their framework if I don't want to.<br /><br />Enter Handlebars.js. By introducing Handlebars, I&nbsp; now have a quick and easy way to inject data and create templates. Using dynamic data is possible in React of course, but handling it is not as easy as a templating library. Doing it this way also makes this a bit more instinctual for people who come from CMS systems such as Wordpress or frameworks that use templating (ember.js).<br /><br />Basically by introducing Handlebars, you now have the flexibility to create template html files while being able to create reuseable components like headers and footers. The only code you would need to inject into your templates would be something like&nbsp;</p>
+<pre class="language-markup"><code>&lt;div id="header"&gt;&lt;/div&gt; &lt;!-- Header --&gt;
+
+or 
+
+&lt;div id="footer"&gt;&lt;/div&gt; &lt;!-- Footer --&gt;</code></pre>
+<p>As Wordpress developers know this is similar to how Wordpress allows you to add headers/footers</p>
+<pre class="language-php"><code>Word Press Method
+
+&lt;?php get_header(); ?&gt; &lt;!-- Header --&gt;
+
+and
+
+&lt;?php get_footer(); ?&gt; &lt;!-- Footer --&gt;
+</code></pre>
+<p>And you can go on and create even more reusable components through React like Sidebars or maybe Navigations. Then they can easily be reused by simply putting them inside the div.</p>
+<pre class="language-markup"><code>Like this
+
+&lt;div id="navigation"&gt;&lt;/div&gt; &lt;!-- Navigation --&gt;
+
+&lt;div id="sidebar"&gt;&lt;/div&gt; &lt;!-- Sidebar --&gt;
+</code></pre>
+<p>By more closely resembling a CMS system, this maybe easier or more intuitive for developers who are use to templating but also using components.</p>
+<p>&nbsp;</p>
+<h2><strong>Setting up the environment</strong></h2>
+<p>Let's now start our project, the first thing we will need is to download NodeJS. To see how you can install it on your system you can go&nbsp;<a href="https://www.ostechnix.com/install-node-js-linux/">here</a>&nbsp;or if you're on windows you can download NodeJS from the download section&nbsp;<a href="https://nodejs.org/en/download/">here</a>(download the msi installer).<br /><br />After you're able to setup node on your machine, go ahead and create a new folder and name it whatever you like, or react-blog-project if you're not creative enough. I put the folder inside c: just for easier reference. Now open up your command prompt, and navigate to the folder.</p>
+<pre class="language-markup"><code>cd c:
+
+cd react-blog-project</code></pre>
+<p>Now that we are in the folder we need to initialize node. We can do that by typing into the command line</p>
+<pre class="language-markup"><code>npm init</code></pre>
+<p>You'll be asked a series of questions just hit enter through all of it and continue. Once you're finished you should see a package.json file. Now we need to install some packages/dependencies. type into the command line the following.</p>
+<p>&nbsp;</p>
+<pre class="language-markup"><code>npm install express path</code></pre>
+<p>Express and Path</p>
+<pre class="language-markup"><code>npm install webpack webpack-dev-server</code></pre>
+<p>Webpack</p>
+<pre class="language-markup"><code>npm install babel-loader babel-core babel-preset-es2015 babel-preset-react</code></pre>
+<p>Babel (for react)</p>
+<pre class="language-markup"><code>npm install react react-dom</code></pre>
+<p>React</p>
+<pre class="language-markup"><code>npm install yarn
+</code></pre>
+<p>Yarn</p>
+<p>&nbsp;</p>
+<p>The first thing I like to do because it makes me feel happy is setting up the webserver. So let's make a new js file and name it "server" (or whatever you like). Inside the file copy and paste the code below.</p>
+<pre class="language-javascript"><code>/*
+ * server.js
+ */
+var express = require('express');
+//require express
+
+app = express();
+
+app.get('/', (req, res) =&gt; {
+res.send('Hello World!');
+})
+//Browser output Hello World!
+
+app.listen(8080);
+//listen on port 8080
+
+console.log('server started on '+ 8080);
+</code></pre>
+<p>Now let's start up the server, go back to the command line and type the cmd</p>
+<pre class="language-markup"><code>node server.js</code></pre>
+<p>Now look inside your console and you should see "server started on" and then the port 8080. And if we open up our browser we can go to the url http://www.localhost:8080 which will give us the output "Hello World!". We now have a local server setup. But we want to actually serve up the index.html file. So stop the server with <strong>ctrl + c </strong>and let's change the code a bit in our server.js file.</p>
+<pre class="language-javascript"><code>var express = require('express');
+//require express
+
+app = express();
+
+app.use(express.static(__dirname));
+//Serve static file
+
+app.listen(8080);
+//listen on port 8080
+
+console.log('server started on '+ 8080);
+</code></pre>
+<p>Now let's create an index.html file and insert the following.</p>
+<pre class="language-markup"><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+
+&lt;h1&gt;Hello World!&lt;/h1&gt;
+&lt;p&gt;My first paragraph.&lt;/p&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>save it and now restart the server with cmd line node server.js. You should now see the output "Hello World!" and "My first paragraph".<br /><br />That's it for now, in the next part we'll set up React in our environment.</p>]]></body><date>1519359161</date><active>1</active><edited_date>1519359338</edited_date><status>PUBLISHED</status><cover>https://i.imgur.com/1ptcQ7x.png</cover></article><article><id>4</id><title>Building a CMS</title><body><![CDATA[<p>One of thing's I've been working on lately is developing my own micro content management system. As I was thinking about how I was going to build my blog, I thought of the usual systems you've probably heard before, <a href="https://wordpress.org/">Wordpress</a>/<a href="https://www.drupal.org/">Drupal</a>. Although, those are great CMS systems, and I've built a wordpress site before (you can see that <a href="https://warm-reaches-23897.herokuapp.com/" target="_blank" rel="noopener">here</a>), it's not my cup of tea. So I figured why not just build one myself.&nbsp;</p>
+<p><em>Also I understand the need for drag and drops like <a href="https://www.wix.com/">Wix</a> or <a href="https://www.weebly.com/">Weebly</a>, and its perfectly acceptable for designers or those have no interest in programming.</em></p>
+<p>When designing the system the first thing I thought about was figuring out the core parts of a content management system since I already knew what a CMS should do. Wordpress is developed on top of a pretty common stack LAMP. LAMP stands for Linux, Apache, MySQL, PHP. If we broke this down into parts we can figure out exactly what is needed for a CMS.<br /><br />1. An operating system (<strong>Linux</strong>)<br /><br />2. A webserver (<strong>Apache</strong>)<br /><br />3. A database (<strong>MySQL</strong>)<br /><br />4. A programming language for server-side scripting (<strong>PHP</strong>).<br /><br /><em>5. Javascript/HTML/CSS which is pretty much required for any web related development.</em></p>
+<p>Understanding these basics, it was easy to organize how I would build my system. However, I wanted to use new technologies.<br /><br />I decided to use Ubuntu, Nginx, MySQL, Python for my OS, webserver, database, server-languge respectively.</p>
+<p><br />To shape the front-end I used&nbsp;<a href="https://reactjs.org/">React</a>,&nbsp;<a href="http://handlebarsjs.com/">Handlebars</a> for templating, and <a href="https://getbootstrap.com/">Bootstrap</a>. I also use <a href="https://expressjs.com/">Express</a>&nbsp;to tie the backend and the frontend together.</p>
+<p>Although there's a lot of moving parts to the project, most of the libaries I used are considered lightweight. So far, the CMS prototype I felt has exceed my expectations.&nbsp;The libaries being lightweight gives me adequate flexibility in writing code how I feel like writing it and without being forced into a certain framework while still maintaining modularity.&nbsp;<br /><br />It's been a fun learning process and worthwhile endeavor to see what goes into building a CMS system and how everything ties together.<br /><br />*Side-note I recommend <a href="https://www.tinymce.com/">TinyMCE</a> as a wysiwyg editor. I currently use it, it's lightweight and works wonderfully well with an easy setup.<br /><br />Sample of prototype cms system:<br /><a href="https://i.imgur.com/etJM0K4.jpg" target="_blank" rel="noopener"><img src="https://i.imgur.com/etJM0K4.jpg" width="270" height="130" /></a></p>]]></body><date>1518676259</date><active>1</active><edited_date>1520144211</edited_date><status>PUBLISHED</status><cover>https://i.imgur.com/3HnvsUb.png</cover></article><article><id>3</id><title>Introduction to Bootstrap</title><body><![CDATA[<p>I was recently asked about how to use Bootstrap. Before I explained how to use it, I think it's important to understand what Bootstrap is not.<br /><br />It is not an end all be all front-end library that is critical for development. It is, <em>in fact</em>, possible to build web applications without it.<br /><br /><strong>So what is it then?</strong> And why's your employer raving mad about it/forcing you to use it?</p>
+<p>&nbsp;</p>
+<blockquote>
+<h3><em>"It's just css,&nbsp;but css that's pre-written for you."</em></h3>
+<p>&nbsp;</p>
+</blockquote>
+<p>Developed by some guys at Twitter (Mark Otto and Jacob Thorton), it's a html/css design template library for quicker more coordinated development. In the simplest way I can put it, it's just css,<em> but css that's pre-written for you.</em> In the old days before Bootstrap, many creative front-end developers would write their own css. No problems there right? Sure, unless you weren't the one who wrote the css. For everyone else who wanted to make changes, it became a nightmare game of web Jenga to see what could be changed before the site fell apart.<br /><br /></p>
+<p>And this is where Bootstrap comes in. Here are some advantages to using Bootstrap.</p>
+<ul>
+<li><strong>Consistency</strong> - Ensures consistency between developers. Since Bootstrap uses the same design templates anyone familiar with Bootstrap will be able to fix or make changes easily.<br /><br /></li>
+<li><strong>Prototyping</strong> - With predefined templates and classes, it allows developers to quickly prototype something and work on other areas of development.<br /><br /></li>
+<li><strong>Responsive&nbsp;</strong>- In the digital age of multiple different browsers ranging from desktops to phones, Bootstrap responds and adapts well to each of them.<br /><br /></li>
+<li><strong>Compatible</strong> - Bootstrap is also compatible between multiple modern browsers.<br /><br /></li>
+<li><strong>Easy to use</strong> - It's fairly easy to use, anyone familiar with html/css shouldn't have too much problems using it<br /><br /></li>
+</ul>
+<p>With that said, the best time to use Bootstrap is at the beginning or early part of your project. If you've already built your site with a lot of custom css, it's generally a bad idea to then try to integrate Bootstrap into your project as you could end up causing more problems then you solve.&nbsp;<br /><br />Now that the intro is out the way let's quickly setup Bootstrap for a test drive. First create an html file, name it whatever you want, or <em>index.html</em> and enter the following:<em><br /></em></p>
+<pre class="language-markup"><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+
+&lt;head&gt;
+  &lt;!-- Required meta tags --&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-
+  scale=1"&gt;
+
+&lt;/head&gt;
+
+&lt;body&gt;
+
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre>
+<p><br />Between &lt;head&gt; and &lt;/head&gt; and under &lt;meta&gt; tags enter the bootstrap cdn:</p>
+<pre class="language-markup"><code>&lt;!-- Bootstrap CSS --&gt;
+&lt;link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"&gt;</code></pre>
+<p><br />Now between the body tags enter this:</p>
+<pre class="language-markup"><code>&lt;!-- Container --&gt;
+&lt;div class="container-fluid"&gt;  
+  &lt;!-- Row 1 --&gt;
+  &lt;div class="row text-white bg-dark" "padding-bottom: 10%;"&gt;
+      &lt;div class="container-fluid text-center"&gt;row&lt;/div&gt;
+  &lt;/div&gt;
+    &lt;!-- Row 2 --&gt;
+  &lt;div class="row" &gt;
+      &lt;div class="col text-white text-center bg-primary" "padding-bottom: 33%;"&gt;col-1&lt;/div&gt;
+      &lt;div class="col text-white text-center bg-primary"&gt;col-2&lt;/div&gt;
+      &lt;div class="col text-white text-center bg-primary"&gt;col-3&lt;/div&gt;
+  &lt;/div&gt;
+    &lt;!-- Row 3 --&gt;
+  &lt;div class="row text-white bg-dark" "padding-bottom: 10%;"&gt;
+      &lt;div class="container-fluid text-center"&gt;row&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;  &lt;!-- end container --&gt;</code></pre>
+<p><br />Now go ahead and double click on the file and check it out inside your browser. You should see 3 rows, 1 top row, a 2nd row with 3 columns, and a 3rd row.</p>
+<p>This was just a quick introduction, we'll go more into details in the next bootstrap tutorial.</p>
+<p>Here's the full code for the html:</p>
+<pre class="language-markup"><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+
+&lt;head&gt;
+  &lt;!-- Required meta tags --&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-
+  scale=1"&gt;
+  &lt;!-- Bootstrap CSS --&gt;
+&lt;link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"&gt;
+
+&lt;/head&gt;
+
+&lt;body&gt;
+&lt;!-- Container --&gt;
+&lt;div class="container-fluid"&gt;
+    &lt;!-- Row 1 --&gt;
+  &lt;div class="row text-white bg-dark" "padding-bottom: 10%;"&gt;
+      &lt;div class="container-fluid text-center"&gt;row&lt;/div&gt;
+  &lt;/div&gt;
+    &lt;!-- Row 2 --&gt;
+  &lt;div class="row" &gt;
+      &lt;div class="col text-white text-center bg-primary" "padding-bottom: 33%;"&gt;col-1&lt;/div&gt;
+      &lt;div class="col text-white text-center bg-primary"&gt;col-2&lt;/div&gt;
+      &lt;div class="col text-white text-center bg-primary"&gt;col-3&lt;/div&gt;
+  &lt;/div&gt;
+    &lt;!-- Row 3 --&gt;
+  &lt;div class="row text-white bg-dark" "padding-bottom: 10%;"&gt;
+      &lt;div class="container-fluid text-center"&gt;row&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;  &lt;!-- end container --&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+</code></pre>]]></body><date>1518404985</date><active>1</active><edited_date>1518833057</edited_date><status>PUBLISHED</status><cover>https://v4-alpha.getbootstrap.com/assets/brand/bootstrap-social-logo.png</cover></article><article><id>2</id><title>Fetching data with React</title><body><![CDATA[<p>When I started learning about implementing API's, the first thing I learned was to use jQuery AJAX to make request. If you've done request before this should look quite familiar.</p>
+<pre class="language-javascript"><code>$.ajax({
+ type: "POST",
+ url: url,
+ data: data,
+ success: function(data) {
+ // Success code here
+ },
+ error: function() {
+ // Error code here
+ }
+});</code></pre>
+<p>This works great! Unless you use React. Of course there are ways to implement this code even if you use React, but it's ill-advised. In fact, React already has a method to GET/POST data. Introducing Fetch! Yes, I'm trying to make fetch happen. Fetch should happen.Here's my number one reason for using Fetch over jQuery's AJAX or HTTP GET(if you're into vanilla JS). <br /><br />Performance. <br /><br />I found that Fetch was actually faster at grabbing data in my use case. Although my use case was small, I found performance increased by about 25-50ms. <strong>MILLISECONDS!?</strong> Yes milliseconds, as the project grows bigger, those milliseconds will begin to add up, increasing load time. There are tons of reasons why you should be making your site load within atleast 3 seconds. Google search engine rankings being one of them. However, I won't be getting into that here.<br /><br />Fetch itself is also simple to use, here's the code below</p>
+<pre class="language-javascript"><code>//GET
+fetch(url)
+  .then(response =&gt; response.json())
+  .then( data =&gt; {
+  //handle data here
+ });
+
+//POST
+fetch(url, {
+ method: 'POST',
+ body: 'post data here',
+ headers: new Headers({headers here})
+})
+ .then(response =&gt; response.json())
+ .then(response =&gt; //handle response here)
+ .catch(error =&gt; //handle error here)</code></pre>
+<p>And there you have it, not too bad. Give it a try and see if it might improve your site speed or if you just want to try to make requests with React.&nbsp;</p>]]></body><date>1517969484</date><active>1</active><edited_date>1518046308</edited_date><status>PUBLISHED</status><cover>https://readwrite.com/wp-content/uploads/React-components.png</cover></article><article><id>1</id><title>Hello World!</title><body><![CDATA[<p>It all starts with the first blog post.<br /><br />I've been hesitant to start a blog as I've always wondered what to talk about. However, ever since I've picked up developing, I've seemed to drive my friends crazy by constantly chattering every time I learn something new and considering the scope of Computer Science, that's pretty much every <em>damn</em> day. So I've decided that I might as well put all that talking to good use and write about it so others who aren't forced to hear me talk might benefit from it and learn as well.<br /><br />But first here's a bit about myself.<br /><br />I've only picked up developing in the past 6 months and I've mostly taught myself through endless late night research. I didn't really feel like programming until I was challenged to try it out and the rest is history. Instant addiction! Personally, I love to build and share things with others. I think there's some proverb out there about how if you can't find what you need then just do it yourself. But, in all honesty I don't consider myself a seasoned programmer so I hope you don't expect expert level coding. I try my best to modularize and optimze my code, but I may miss some finer points. But I'm hoping with this blog I'll be able to document my progress and I hope you as a reader and learner will grow with me as well.<br /><br />Although, I know Java, PHP, and Python, my preferred language is Javascript. Therefore, most of the code you see from me will most likley be in Javascript. I even use it for server-side with Node.js and Express, although I've been playing around with Python and Flask lately.<br /><br /><em>About the blog -</em> I know this blog is very barebones at the moment. When I was building this blog, I wanted to take up an interesting challenge. So I decided to just up and build my own Content Management System! For those who don't know what a Content Management System is, it's a system to manage content! Or just think Wordpress, but my own version of it. Although it's very basic in its current state, it's still enough to build a blog with. Expect to hear more about it as I document more of its progress.<br /><br /></p>]]></body><date>1517297262</date><active>1</active><edited_date>None</edited_date><status>PUBLISHED</status><cover>None</cover></article></response>
+    </root>
+    

@@ -32,34 +32,39 @@ curl($url);
     <script src="/js/prism.js"></script>
   </head>
 
-  <?php include 'header.php'; ?>
+  <?php include 'partials/header.php'; ?>
 
 <body>
 
   <div class="container">
     <div class="row">
       <div class="col-sm-8 blog-main">
-        <?php
-        // Convert Unix Timestamp to formatted date
-        $date = new DateTime();
-        $date->setTimestamp((int) $xml->response->date);
-        echo "<h2>" . $xml->response->title . "</h2>";
-        echo "by ". $xml ->info->owner . " on <em>" . $date->format('m/d/Y') . "</em>";
-        echo $xml->response->body;
-        echo "<br/><br/>";
-         ?>
+
+        <h2><?php echo $xml->response->title ?></h2>
+
+        by . <?php echo $xml ->info->owner ?> on
+
+        <em>
+        <?php $date = new DateTime();
+        $date->setTimestamp((int) $xml->response->date); echo $date->format('m/d/Y') ?>
+        </em>
+
+        <?php echo $xml->response->body ?>
+
+        <br/><br/>
+
       <div id="blog_social_media"></div>
       <div id="blog_comments"></div>
       </div>
 
       <div class="col-sm-3 offset-sm-1 blog-sidebar">
-        <?php include 'sidebar.php'; ?>
+        <?php include 'partials/sidebar.php'; ?>
       </div>
 
     </div> <!-- /.row -->
   </div><!-- /.container -->
 
-<?php include 'footer.php'; ?>
+<?php include 'partials/footer.php'; ?>
 
 
   <!-- Bootstrap core JavaScript

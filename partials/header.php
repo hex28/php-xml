@@ -12,7 +12,7 @@
               </svg>
             </div>
             <div class="col-sm-8">
-              <?php include 'icons.php' ?>
+              <?php include 'icons.html' ?>
             </div>
           </div>
         </div>

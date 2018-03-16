@@ -1,10 +1,15 @@
 <?php
 // include functions for curl method
 include 'functions.php';
-
-//use curl method to get and convert data to simplexml
-//xml data put into variable $xml
-curl('http://www.andy-huynh.com:5000/postsxml/')
+//saving xml data to file as experiment
+$content = file_get_contents('http://www.andy-huynh.com:5000/postsxml/');
+$fp = fopen($_SERVER['DOCUMENT_ROOT'] . "/savedxml.xml","w");
+fwrite($fp, $content);
+fclose($fp);
+//load file
+$xml = simplexml_load_file('savedxml.xml');
+//send data to session for other areas to use
+$_SESSION['xml'] = $xml;
  ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,7 +33,7 @@ curl('http://www.andy-huynh.com:5000/postsxml/')
 
   </head>
 
-<?php include 'header.php';
+<?php include 'partials/header.php';
 ?>
 
   <body>
@@ -38,26 +43,29 @@ curl('http://www.andy-huynh.com:5000/postsxml/')
           <?php
           //str_rep function is located in functions.php.
           //used for clean urls. removes extra variables like ! and replaces spaces with -
-          foreach ($xml->xpath('//article') as $article){
-            echo '<div class="blog-post" style="word-wrap: break-word;">';
-            echo '<div class="row">';
-            if ($article->cover == "None"){
-                echo "";
-            }else {
-              echo '<div class="col-sm-3"><a href="#" + onclick="read(' . "'" . $article->id . "','" . str_rep($article->title) . "'" . ')"' .
-                '><img src="' . $article->cover . '" style="width:100%; height:auto;"></img></a><br/></div>';
-            }
-            echo '<div class="col-sm">';
-            echo '<a href="#" class="my-link" onclick="read('. "'" . $article->id . "','" . str_rep($article->title) . "'" . ')"><h2><strong>' . $article->title . '</strong></h2></a>';
-            echo substr(strip_tags($article->body) ,0, 200) . ' ...';
-            echo '</div></div></div>';
-          }
-          ?>
+          foreach ($xml->xpath('//article') as $article):?>
+            <div class="blog-post" style="word-wrap: break-word;">
+              <div class="row">
+                <?php if ($article->cover == "None"): ?>
+                  <!-- Do Nothing if cover not available -->
+                <?php else: ?>
+                <div class="col-sm-3">
+                  <a href="#" onclick="read('<?php echo $article->id ?>','<?php echo str_rep($article->title)?>')">
+                  <img src="<?php echo $article->cover ?>" style="width:100%; height:auto;"></img></a><br/></div>
+                <?php endif ?>
+                <div class="col-sm">
+                  <a href="#" class="my-link" onclick="read('<?php echo $article->id ?>','<?php echo str_rep($article->title)?>')"><h2>
+                  <strong><?php echo $article->title ?></strong></h2></a>
+                  <?php echo substr(strip_tags($article->body) ,0, 200) . ' ...'; ?>
+                </div>
+              </div>
+            </div>
+          <?php endforeach; ?>
 
         </div><!-- /.blog-main -->
 
         <div class="col-sm-3 offset-sm-1 blog-sidebar">
-        <?php include 'sidebar.php'?>
+        <?php include 'partials/sidebar.php'; ?>
 
         </div><!-- /.blog-sidebar -->
 
@@ -65,7 +73,7 @@ curl('http://www.andy-huynh.com:5000/postsxml/')
 
     </div><!-- /.container -->
 
-    <?php include 'footer.php'?>
+    <?php include 'partials/footer.php'; ?>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
