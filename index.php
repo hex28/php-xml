@@ -9,7 +9,6 @@ fclose($fp);
 //load file
 $xml = simplexml_load_file('savedxml.xml');
 //send data to session for other areas to use
-$_SESSION['xml'] = $xml;
  ?>
 <!DOCTYPE html>
 <html lang="en">
